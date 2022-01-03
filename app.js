@@ -1,42 +1,14 @@
-const parse = require("pg-connection-string").parse;
-const { Client } = require("pg");
-const prompt = require("prompt");
-let Table = [];
-let TableOfItems = [];
+let Table = ["Allan Gardens Food Bank", "Avenue Road Food Bank", "Bethany Baptist Church", "Bloor West Food Bank", "Daily Bread Food Bank"];
+let TableOfItems = [["baby food", "canned", "rice", "pasta", "milk", "beans"], ["canned", "instant foods", "fruits", "vegetables"], ["canned"], ["canned", "instant", "pasta sauce", "peanut butter", "cereal", "toothpaste", "razors"], ["canned", "groceries", "bread", "pasta", "dairy"]];
 let learnMoreIDs = [];
-let locations = [];
+let locations = [[43.662891, -79.372570], [43.676942, -79.397925], [43.689219, -79.348473], [43.650205, -79.479346], [43.606892, -79.505963]];
 
-let contact = [];
-(async () => {
-
-  prompt.start()
-  const URI = await prompt.get("connectionString");
-  var connectionString;
-  
-  if (URI.connectionString.includes("env:appdata")) {
-    connectionString = await URI.connectionString.replace(
-      "$env:appdata",
-      process.env.APPDATA
-    );
-  }
-
-
-  var config = parse(connectionString);
-  config.port = 26257;
-  config.database = 'bank';
-  const client = new Client(config);
-  client.connect();
-  const selectQ = "SELECT * FROM bankData";
-  const querying = await (await client.query(selectQ));
-
-for(var i = 0; i<querying.rows.length;i++){
-  Table.push(querying.rows[i].name);
-  TableOfItems.push([querying.rows[i].items]);
-  locations.push([querying.rows[i].longlat])
-  contact.push([querying.rows[i].address, querying.rows[i].contact, querying.rows[i].hyperlink])
-
-}
-})
+let contact = [
+  ["353 Sherbourne St. Toronto, ON", "allangardensfoodbank@gmail.com", "allangardensfoodbank.com"],
+  ["240 Avenue Rd, Toronto, ON ", "647-717-6969", "www.churchofthemesiah.com"],
+  ["1041 Pape Ave, East York, ON", "bethanychurch@sympatico.ca ", "www.bethanychurcheastyork.com"],
+  ["St. Pius X Catholic Church, 2305 Bloor St W, Toronto, ON", "infofoodbank.lf@gmail.com", "bloorwestfoodbank.ca"],
+  ["191 New Toronto St, Toronto, ON", "416-203-0050", "www.dailybread.ca"]];
 
 
 window.onload = function () {
